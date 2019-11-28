@@ -22,11 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.douglasjunior.bluetoothsamplekotlin
+package com.github.peterfromsweden.relaycontroller
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -150,19 +149,7 @@ class MainActivity : AppCompatActivity(), BluetoothService.OnBluetoothScanCallba
         Toast.makeText(this, status.toString(), Toast.LENGTH_SHORT).show()
 
         if (status == BluetoothStatus.CONNECTED) {
-            val colors = arrayOf<CharSequence>("Try text", "Try picture")
-
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Select")
-            builder.setItems(colors) { dialog, which ->
-                if (which == 0) {
-                    startActivity(Intent(this@MainActivity, DeviceActivity::class.java))
-                } else {
-                    startActivity(Intent(this@MainActivity, BitmapActivity::class.java))
-                }
-            }
-            builder.setCancelable(false)
-            builder.show()
+            startActivity(Intent(this@MainActivity, RelayActivity::class.java))
         }
 
     }

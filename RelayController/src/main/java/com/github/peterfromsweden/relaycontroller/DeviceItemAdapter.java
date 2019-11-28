@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.douglasjunior.bluetoothsamplekotlin;
+package com.github.peterfromsweden.relaycontroller;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;

@@ -7,9 +7,9 @@ android {
     buildToolsVersion "26.0.3"
 
     defaultConfig {
-        applicationId "com.github.douglasjunior.bluetoothsamplekotlin"
+        applicationId "com.github.douglasjunior.com.github.peterfromsweden.relaycontroller"
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }

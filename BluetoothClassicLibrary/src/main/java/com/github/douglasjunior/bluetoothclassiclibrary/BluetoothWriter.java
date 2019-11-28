@@ -31,6 +31,11 @@ public class BluetoothWriter {
         this.service = service;
     }
 
+    public void write(byte[] barr) {
+        if (service != null)
+            service.write(barr);
+    }
+
     public void write(String msg) {
         if (service != null)
             service.write(msg.getBytes());

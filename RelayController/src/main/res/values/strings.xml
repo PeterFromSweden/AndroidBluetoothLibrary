@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">Bluetooth Sample Kotlin</string>
+    <string name="app_name">Relay Controller</string>
     <string name="action_scan">SCAN</string>
     <string name="action_stop">STOP</string>
     <string name="activity_device">Device</string>
+    <string name="activity_relay">Relay</string>
+    <string name="button_on">On</string>
+    <string name="button_off">Off</string>
 </resources>

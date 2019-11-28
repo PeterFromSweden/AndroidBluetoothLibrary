@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.douglasjunior.bluetoothsamplekotlin;
+package com.github.peterfromsweden.relaycontroller;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -40,13 +40,9 @@ import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothWriter;
  * Created by douglas on 10/04/2017.
  */
 
-public class DeviceActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback, View.OnClickListener {
+public class RelayActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
 
-    private static final String TAG = "DeviceActivity";
-
-    private FloatingActionButton mFab;
-    private EditText mEdRead;
-    private EditText mEdWrite;
+    private static final String TAG = "RelayActivity";
 
     private BluetoothService mService;
     private BluetoothWriter mWriter;
@@ -54,15 +50,9 @@ public class DeviceActivity extends AppCompatActivity implements BluetoothServic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_relay);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(this);
-
-        mEdRead = (EditText) findViewById(R.id.ed_read);
-        mEdWrite = (EditText) findViewById(R.id.ed_write);
 
         mService = BluetoothService.getDefaultInstance();
         mWriter = new BluetoothWriter(mService);
@@ -77,7 +67,6 @@ public class DeviceActivity extends AppCompatActivity implements BluetoothServic
     @Override
     public void onDataRead(byte[] buffer, int length) {
         Log.d(TAG, "onDataRead: " + new String(buffer, 0, length));
-        mEdRead.append("< " + new String(buffer, 0, length) + "\n");
     }
 
     @Override
@@ -104,12 +93,23 @@ public class DeviceActivity extends AppCompatActivity implements BluetoothServic
     @Override
     public void onDataWrite(byte[] buffer) {
         Log.d(TAG, "onDataWrite");
-        mEdRead.append("> " + new String(buffer));
     }
 
-    @Override
-    public void onClick(View v) {
-        mWriter.writeln(mEdWrite.getText().toString());
-        mEdWrite.setText("");
+    public void onClickOn(View v) {
+        mWriter.write(hexStringToByteArray("A00101A2"));
+    }
+
+    public void onClickOff(View v) {
+        mWriter.write(hexStringToByteArray("A00100A1"));
+    }
+
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
     }
 }
