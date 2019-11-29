@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button_on">Av</string>
+    <string name="button_off">På</string>
+    <string name="activity_relay">Relä</string>
+    <string name="activity_device">Enhet</string>
+    <string name="action_stop">STOPPA</string>
+    <string name="action_scan">SÖK</string>
+    <string name="app_name">Relä kontroll</string>
+</resources>
