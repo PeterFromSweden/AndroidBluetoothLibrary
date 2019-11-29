@@ -28,12 +28,15 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothDeviceDecorator;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,18 +54,27 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.Vi
     private final LayoutInflater mInflater;
     private OnAdapterItemClickListener mOnItemClickListener;
 
+    private static final String TAG = DeviceItemAdapter.class.getSimpleName();
+    private String mDeviceFilter;
+
 
     public DeviceItemAdapter(Context context, List<BluetoothDevice> devices) {
         super();
         mContext = context;
+        mDeviceFilter = "BT04";
         mDevices = decorateDevices(devices);
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public static List<BluetoothDeviceDecorator> decorateDevices(Collection<BluetoothDevice> btDevices) {
+    public List<BluetoothDeviceDecorator> decorateDevices(Collection<BluetoothDevice> btDevices) {
         List<BluetoothDeviceDecorator> devices = new ArrayList<>();
         for (BluetoothDevice dev : btDevices) {
-            devices.add(new BluetoothDeviceDecorator(dev, 0));
+            Log.d(TAG, "decorateDevices: " + dev.getName() +
+                    " - " + dev.getAddress() );
+
+            if(dev.getName().contains(mDeviceFilter)) {
+                devices.add(new BluetoothDeviceDecorator(dev, 0));
+            }
         }
         return devices;
     }
@@ -80,6 +92,10 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final BluetoothDeviceDecorator device = mDevices.get(position);
+
+        Log.d(TAG, "onBindViewHolder: " + device.getName() +
+                " - " + device.getAddress()  +
+                " - " + device.getRSSI() );
 
         holder.tvName.setText(TextUtils.isEmpty(device.getName()) ? "---" : device.getName());
         holder.tvAddress.setText(device.getAddress());
@@ -104,6 +120,10 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.Vi
 
     public void setOnAdapterItemClickListener(OnAdapterItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setDeviceFilter(@NotNull String s) {
+        mDeviceFilter = s;
     }
 
     public interface OnAdapterItemClickListener {

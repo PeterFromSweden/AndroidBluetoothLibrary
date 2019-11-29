@@ -26,6 +26,7 @@ package com.github.peterfromsweden.relaycontroller
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -34,6 +35,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -73,12 +75,20 @@ class MainActivity : AppCompatActivity(), BluetoothService.OnBluetoothScanCallba
         mRecyclerView!!.layoutManager = lm
 
         mAdapter = DeviceItemAdapter(this, mBluetoothAdapter!!.bondedDevices)
+
         mAdapter!!.setOnAdapterItemClickListener(this)
         mRecyclerView!!.adapter = mAdapter
 
         mService = BluetoothService.getDefaultInstance()
 
-        mService!!.setOnScanCallback(this)
+        if (mBluetoothAdapter!!.state == BluetoothAdapter.STATE_OFF) {
+            var toast = Toast.makeText(this, "Bluetooth is off", Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.TOP,0, 250)
+            toast.show()
+        }
+        else {
+            mService!!.setOnScanCallback(this)
+        }
         mService!!.setOnEventCallback(this)
     }
 
@@ -172,6 +182,6 @@ class MainActivity : AppCompatActivity(), BluetoothService.OnBluetoothScanCallba
 
     companion object {
 
-        val TAG = "BluetoothExampleKotlin"
+        val TAG = "RelayController"
     }
 }
